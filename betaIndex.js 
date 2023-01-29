@@ -13,6 +13,7 @@ client.on('message', async message => {
 
     if (command === 'register') {
         let username = args[0];
+        let password = args[1];
         lastfm.getSessionKey({username, password}, (err, session) => {
             if (err) {
                 message.reply(`Erro: ${err}`);
@@ -39,30 +40,30 @@ client.on('message', async message => {
         if (!session) {
             message.reply("Você precisa se registrar antes de usar este comando.");
             return;
-            }
-            let track = args.join(" ");
-            lastfm.playTrack({sk: session, track}, (err) => {
+        }
+        let track = args.join(" ");
+        lastfm.playTrack({sk: session, track}, (err) => {
             if (err) {
-            message.reply(`Erro: ${err}`);
+                message.reply(`Erro: ${err}`);
             } else {
-            message.reply(`Música "${track}" tocada com sucesso.`);
+                message.reply(`Música "${track}" tocada com sucesso.`);
             }
-            });
-            } else if (command === 'toptracks') {
-            let username = args[0];
-            lastfm.getTopTracks({username}, (err, topTracks) => {
+        });
+    } else if (command === 'toptracks') {
+        let username = args[0];
+        lastfm.getTopTracks({username}, (err, topTracks) => {
             if (err) {
-            message.reply(`Erro: ${err}`);
+                message.reply(`Erro: ${err}`);
             } else {
-            let tracks = topTracks.track.slice(0, 5);
-            let reply = "As 5 músicas mais tocadas do usuário " + username + " são:\n";
-            tracks.forEach((track, index) => {
-            reply += `${index + 1}. ${track.name} - ${track.artist.name}\n `;
-            });
-            message.reply(reply);
+                let tracks = topTracks.track.slice(0, 5);
+                let reply = "As 5 músicas mais tocadas do usuário " + username + " são:\n";
+                tracks.forEach((track, index) => {
+                    reply += `${index + 1}. ${track.name} - ${track.artist.name}\n `;
+                });
+                message.reply(reply);
             }
-            });
-            }
-            });
-            
-            client.login('SEU_TOKEN_DISCORD');
+        });
+    }
+});
+
+client.login(

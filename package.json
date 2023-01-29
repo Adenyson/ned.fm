@@ -1,0 +1,19 @@
+{
+    "name": "meu-bot-discord",
+    "version": "1.0.0",
+    "description": "Um bot para o Discord que usa a API do Last.fm",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "discord.js": "^12.3.1",
+      "last-fm": "^2.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/meu-usuario/meu-bot-discord.git"
+    }
+
+  }
+  
