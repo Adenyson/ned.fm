@@ -32,39 +32,45 @@ client.on('message', async message => { // Evento de mensagem do Discord
             if (err) {
                 message.reply(`Erro: ${err}`); // Caso haja erro, envia a mensagem de erro para o usuário
             } else {
-                message.reply(`Música atual: ${nowPlaying.artist['#text']} - ${nowPlaying.name}); } else if (command === 'play') { // Se o comando digitado for "play" 
-                    let session = userRegistry.get(message.author.id); // Busca a chave de sessão do usuário no mapa 
-                    if (!session) { message.reply("Você precisa se registrar antes de usar este comando."); // Caso o usuário não esteja registrado, envia essa mensagem 
-                    return; } let artist = args[0]; let track = args[1]; if (!artist || !track) { message.reply("Você precisa especificar o artista e a música."); // Caso o usuário não tenha especificado o artista e a música, envia essa mensagem return; } lastfm.scrobble({sk: session, artist, track}, (err, scrobble) => { // Scrobbla a música no LastFM if (err) { message.reply(Erro: ${err}); // Caso haja erro, envia a mensagem de erro para o usuário } else { message.reply(Música tocada com sucesso: ${artist} - ${track}`); // Confirma que a música foi tocada com sucesso para o usuário
+                message.reply(`Música atual: ${nowPlaying.artist['#text']} - ${nowPlaying.name}); // Envia a música atual para o usuário 
+
+              } 
+        }); 
+     } else if (command === 'play') {
+  // Se o comando digitado for "play"
+  
+  let session = userRegistry.get(message.author.id);
+  // Busca a chave de sessão do usuário no mapa
+
+  if (!session) {
+    message.reply("Você precisa se registrar antes de usar este comando.");
+    // Caso o usuário não esteja registrado, envia essa mensagem
+    return;
+  }
+
+  let track = args[0];
+  // Pega o primeiro argumento como nome da música
+
+  lastfm.track.scrobble({sk: session, track, timestamp: Math.floor(Date.now() / 1000)}, (err) => {
+    // "Scrobbling" da música no LastFM
+
+    if (err) {
+      message.reply(`Erro: ${err}`);
+      // Caso haja erro, envia a mensagem de erro para o usuário
+    } else {
+      message.reply(`Música "${track}" scrobbled com sucesso.`);
+      // Confirma o scrobbling para o usuário
+    }
+  });
+} else if (command === 'help') {
+  // Se o comando digitado for "help"
+  message.reply(`Comandos disponíveis: register, nowplaying, play e help.`);
+  // Envia a lista de comandos disponíveis para o usuário
 }
 });
-}
-});
 
-client.login(process.env.DISCORD_TOKEN); // Faz o login do bot no Discord
+client.login(process.env.DISCORD_TOKEN); // Faz o login do bot no Discord com o token do bot 
 
-// Comentários:
-// 1. A primeira linha importa o pacote "dotenv" para ler as variáveis de ambiente.
-// 2. A segunda linha importa o pacote "discord.js" para se comunicar com o Discord.
-// 3. A terceira linha importa o pacote "last-fm" para se comunicar com o LastFM.
-// 4. A quarta linha cria uma instância do cliente do LastFM usando as chaves de API fornecidas.
-// 5. A quinta linha cria uma instância do cliente do Discord.
-// 6. A sexta linha cria uma nova instância do Map para armazenar as chaves de sessão dos usuários.
-// 7. O evento "message" é acionado quando o bot recebe uma mensagem no Discord.
-// 8. Verifica se a mensagem começa com "!!". Se não, o bot não faz nada.
-// 9. Divide a mensagem em um array de argumentos.
-// 10. Pega o primeiro argumento e transforma em letra minúscula.
-// 11. Verifica se o comando digitado é "register". Se sim, busca a chave de sessão do usuário no LastFM e salva no mapa. Se houver erro, envia a mensagem de erro para o usuário.
-// 12.
-
-
-
-//------- Código---------
-//    name}); // Envia a música atual para o usuário } }); } else if (command === 'play') { // Se o comando digitado for "play" let session = userRegistry.get(message.author.id); // Busca a chave de sessão do usuário no mapa if (!session) { message.reply("Você precisa se registrar antes de usar este comando."); // Caso o usuário não esteja registrado, envia essa mensagem return; } let track = args[0]; // Pega o primeiro argumento como nome da música lastfm.track.scrobble({sk: session, track, timestamp: Math.floor(Date.now() / 1000)}, (err) => { // "Scrobbling" da música no LastFM if (err) { message.reply(Erro: ${err}); // Caso haja erro, envia a mensagem de erro para o usuário } else { message.reply(Música "${track}" scrobbled com sucesso.); // Confirma o scrobbling para o usuário } }); } else if (command === 'help') { // Se o comando digitado for "help" message.reply(Comandos disponíveis: register, nowplaying, play e help.`); // Envia a lista de comandos disponíveis para o usuário
-//    }
-//    });
-//
-//    client.login(process.env.DISCORD_TOKEN); // Faz o login no Discord com o token do bot
 
 // Este código é responsável por criar um bot para o Discord que permite aos usuários registrar suas contas do LastFM e scrobblar músicas.
 // Ele usa a biblioteca 'discord.js' para se comunicar com o Discord e a biblioteca 'last-fm' para se comunicar com o LastFM.
